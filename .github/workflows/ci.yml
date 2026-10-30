@@ -60,10 +60,14 @@ jobs:
       - name: Make Maven wrapper executable
         run: chmod +x server/mvnw
 
+      - name: Install native image test runtime
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends imagemagick
+
       - name: Build and test
         working-directory: server
         run: ./mvnw clean verify
         env:
+          ULTIMATE_REQUIRE_IMAGE_MAGICK: 'true'
           DATABASE_URL: r2dbc:postgresql://localhost:5432/Ultimate
           FLYWAY_URL: jdbc:postgresql://localhost:5432/Ultimate
           DATABASE_USERNAME: ultimate
